@@ -11,7 +11,11 @@ print('hi') // calls print<string>
 ```rust
 fn print(v T) {...}
 ```
-The problem with this is that T might be an actual type in scope, in which case `print` is non-generic. For a more complex example, https://vlang.io/docs#generics has a generic method:
+The problem with this is that T might be an actual type in scope, in which case `print` is non-generic. Even if T is not in scope, `print` now looks like an ordinary function.
+
+More complex inference
+---
+https://vlang.io/docs#generics has a generic method:
 ```rust
 fn (r Repo<T>) find_by_id(id int) T? {...}
 ```
@@ -25,7 +29,7 @@ repo := Repo<User>{}
 opt := repo.find_by_id(5)
 ```
 Notice that `find_by_id<User>` is inferred, because `repo` is of type `Repo<User>`.
-For the 1st function, the problem with inferring `find_by_id<T>` from `r Repo<T>` is that T might already be a valid type name. So how does someone reading the signature know if the author meant T to be an existing type or an inferred generic type argument?
+For the 1st function, the problem with inferring `find_by_id<T>` from `r Repo<T>` is that T might already be a valid type name. So how does someone reading the signature know if the author meant T to be an existing type or an inferred generic type argument? I think the signature is complex enough, and that it should be clearer to tell if a function is generic.
 
 Inferred argument syntax
 ---
