@@ -8,6 +8,7 @@ struct IntIter
     ptr mut *int
     end *int
 }
+// this method needs to be in the Array<T> module
 fn (arr []int) iter() IntIter
 {
     unsafe {

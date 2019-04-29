@@ -35,11 +35,7 @@ fn test_iter()
 	assert e == 1
 }
 
-// these functions don't need a body, they're only for use with typeof
-/// get an instance of T
-fn rvalue<T>() T
-/// get the value type from an optional
-fn (opt ?T!) unwrap() T
+import util
 // correct way to find element type, doesn't rely on Iter type arguments
 /// Element type of Iter
 type IterElement<Iter> = typeof(rvalue<Iter>().next().unwrap())
