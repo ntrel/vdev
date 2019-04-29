@@ -1,13 +1,13 @@
 struct MergeIter<I1, I2>
 {
-	i1 I1
-	i2 I2
+	i1 mut I1
+	i2 mut I2
 }
 fn merge(i1 I1!, i2 I2!) MergeIter<I1, I2>
 {
 	return {i1, i2}
 }
-fn (mi mut MergeIter<I1!, I2!>) next()! //?CommonType<ElementType<I1>, ElementType<I2>>
+fn (mi mut MergeIter<I1!, I2!>) next()! //?util.CommonType<IterElement<I1>, IterElement<I2>>
 {
 	if i1.empty() {return i2.next()}
 	if i2.empty() {return i1.next()}

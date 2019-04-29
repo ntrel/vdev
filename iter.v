@@ -39,7 +39,8 @@ fn test_iter()
 /// get an instance of T
 fn rvalue<T>() T
 /// get the value type from an optional
-fn (optional ?T!) unwrap() T
+fn (opt ?T!) unwrap() T
+// correct way to find element type, doesn't rely on Iter type arguments
 /// Element type of Iter
 type IterElement<Iter> = typeof(rvalue<Iter>().next().unwrap())
 
