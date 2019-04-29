@@ -68,11 +68,11 @@ fn (it mut It<T!>) map(f fn(T)R!) Map<T,R>
 }
 
 arr := [1,2,3]
-mut it := arr.iter();
-mit := it.map(fn i! * i)
+mut it := arr.iter()
+mit := it.map(fn i {i * i})
 // print 149
 for e := mit.next()
 {
     print(e)
 }
-assert arr.iter().map(fn i! * i).array() == [1,4,9]
+assert arr.iter().map(fn i {i * i}).array() == [1,4,9]
