@@ -1,3 +1,5 @@
+// See intiter.v for non-generic code
+
 arr := [1,2,3]
 mut it := arr.iter()
 // next returns an optional value, loop while there's a value e
@@ -6,7 +8,7 @@ for e := it.next()
     println(e)
 }
 // same as above but with i counting from 0 to arr.len
-for i,e in arr.iter()
+for i,e in arr
 {
     assert e == arr[i]
 }
