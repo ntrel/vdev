@@ -87,3 +87,22 @@ for e := mit.next()
     print(e)
 }
 assert arr.iter().map(fn i {i * i}).array() == [1,4,9]
+
+// both iterators need to be mutable, so we need a tuple method
+fn (i1 mut I1!, i2 mut I2!) equal() bool
+{
+	for
+	{
+		e := i1.next()
+		if e != i2.next() {return false}
+		if e == none {return true}
+	}
+}
+
+fn test_equal()
+{
+	a := [1,2,3]
+	mut it := a.iter()
+	assert (it, a.iter()).equal()
+	assert it.next() == none
+}
