@@ -21,24 +21,29 @@ struct ArrayIter<T>
 // arr is an array of generic type T, which iter<T> is inferred for
 fn (arr []T!) iter() ArrayIter<T>
 {
+    if !arr.len {return {}}
     p := &arr[0]
-    return {p, p + arr.len}
+    unsafe {
+        return {p, p + arr.len}
+    }
 }
 fn (it mut ArrayIter<T!>) next() T?
 {
     if it.ptr == it.end {return error()}
     e := *it.ptr
-    it.ptr += 1
+    unsafe {
+        it.ptr++
+    }
     return e
 }
 
-// these functions don't need a body, they're for use with typeof
+// these functions don't need a body, they're only for use with typeof
 /// get an instance of T
-fn rvalue<T>() T;
+fn rvalue<T>() T
 /// get the value type from an optional
-fn (optional T!?) unwrap() T;
+fn (optional T!?) unwrap() T
 /// Element type of Iter
-type IterElement<Iter> = typeof(rvalue<Iter>.next().unwrap())
+type IterElement<Iter> = typeof(rvalue<Iter>().next().unwrap())
 
 // array<Iter> is inferred from `it`
 fn (it mut Iter!) array() []IterElement<Iter>

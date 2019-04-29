@@ -16,16 +16,21 @@ struct IntIter
     ptr mut *int
     end *int
 }
-fn (arr []T) iter() IntIter
+fn (arr []int) iter() IntIter
 {
+    if !arr.len {return {}}
     p := &arr[0]
-    return {p, p + arr.len}
+    unsafe {
+        return {p, p + arr.len}
+    }
 }
 fn (it mut IntIter) next() int?
 {
     if it.ptr == it.end {return error()}
     e := *it.ptr
-    it.ptr += 1
+    unsafe {
+        it.ptr++
+    }
     return e
 }
 
