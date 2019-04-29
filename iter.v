@@ -15,13 +15,17 @@ for i,e in arr
 
 struct ArrayIter<T>
 {
+    // these can be null but will never be read when null
+    // so we can avoid using optional types
     ptr mut *T
     end *T
 }
 // arr is an array of generic type T, which iter<T> is inferred for
 fn (arr []T!) iter() ArrayIter<T>
 {
-    if !arr.len {return {}}
+    // maybe converting none to pointer should be unsafe
+    const null = *T(none)
+    if !arr.len {return {null, null}}
     p := &arr[0]
     unsafe {
         return {p, p + arr.len}

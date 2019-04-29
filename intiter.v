@@ -13,12 +13,16 @@ for i,e in arr
 
 struct IntIter
 {
+    // these can be null but will never be read when null
+    // so we can avoid using optional types
     ptr mut *int
     end *int
 }
 fn (arr []int) iter() IntIter
 {
-    if !arr.len {return {}}
+    // maybe converting none to pointer should be unsafe
+    const null = *int(none)
+    if !arr.len {return {null, null}}
     p := &arr[0]
     unsafe {
         return {p, p + arr.len}
