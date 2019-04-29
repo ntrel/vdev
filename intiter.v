@@ -1,19 +1,6 @@
 // iterator example that uses minimal features
 // see iter.v for generic version
 
-arr := [1,2,3]
-mut it := arr.iter()
-// next returns an optional value, loop while there's a value e
-for e := it.next()
-{
-    println(e)
-}
-// same as above but with i counting from 0 to arr.len
-for i,e in arr
-{
-    assert e == arr[i]
-}
-
 struct IntIter
 {
     // these can be null but will never be read when null
@@ -39,6 +26,15 @@ fn (it mut IntIter) next() int?
     return e
 }
 
+fn test_iter()
+{
+	arr := [1,2,3]
+	mut it := arr.iter()
+	// next returns an optional value
+	e := it.next() or {0}
+	assert e == 1
+}
+
 fn (it mut IntIter) array() []int
 {
     // TODO pre-allocate [;it.len] if len defined?
@@ -48,6 +44,14 @@ fn (it mut IntIter) array() []int
         a << e
     }
     return a
+}
+
+fn test_array()
+{
+    arr := [1,2,3]
+    mut it := arr.iter()
+    assert it.array() == arr
+    assert it.next() == none
 }
 
 // iterator for lazy map
@@ -72,15 +76,11 @@ fn square(i int) int
     return i * i
 }
 
-fn main()
+fn test_map()
 {
     arr := [1,2,3]
     mut it := arr.iter()
-    mit := it.map(square)
-    // print 149
-    for e := mit.next()
-    {
-        print(e)
-    }
-    assert arr.iter().map(square).array() == [1,4,9]
+    mut mi := it.map(square)
+    assert mi.array() == [1,4,9]
+    assert mi.next() == none
 }
