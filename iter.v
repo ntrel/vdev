@@ -23,11 +23,9 @@ struct ArrayIter<T>
 // arr is an array of generic type T, which iter<T> is inferred for
 fn (arr []T!) iter() ArrayIter<T>
 {
-    // maybe converting none to pointer should be unsafe
-    const null = *T(none)
-    if !arr.len {return {null, null}}
-    p := &arr[0]
     unsafe {
+        // Array<int>.ptr should be readable in unsafe code
+        p := arr.ptr
         return {p, p + arr.len}
     }
 }

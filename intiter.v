@@ -1,3 +1,6 @@
+// iterator example that uses minimal features
+// see iter.v for generic version
+
 arr := [1,2,3]
 mut it := arr.iter()
 // next returns an optional value, loop while there's a value e
@@ -20,11 +23,9 @@ struct IntIter
 }
 fn (arr []int) iter() IntIter
 {
-    // maybe converting none to pointer should be unsafe
-    const null = *int(none)
-    if !arr.len {return {null, null}}
-    p := &arr[0]
     unsafe {
+        // Array<int>.ptr should be readable in unsafe code
+        p := arr.ptr
         return {p, p + arr.len}
     }
 }
