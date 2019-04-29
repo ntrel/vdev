@@ -1,7 +1,7 @@
 import intiter
 
 // Returns a closure
-fn (it mut IntIter) map_close(f fn(int)int) fn()int?
+fn (it mut IntIter) map_close(f fn(int)int) fn()?int
 {
     return fn {
         e := it.next()?
@@ -11,7 +11,7 @@ fn (it mut IntIter) map_close(f fn(int)int) fn()int?
 
 arr := [1,2,3]
 mut it := arr.iter();
-f := it.map_close(fn i -> i * i)
+f := it.map_close(fn i {i * i})
 // print 149
 for e := f()
 {
@@ -22,7 +22,7 @@ for e := f()
 import iter
 
 // Returns a closure
-fn (it mut It<T!>) map_close(f fn(T)R!) fn()R?
+fn (it mut It<T!>) map_close(f fn(T)R!) fn()?R
 {
     return fn {
         e := it.next()?
@@ -32,7 +32,7 @@ fn (it mut It<T!>) map_close(f fn(T)R!) fn()R?
 
 arr := [1,2,3]
 mut it := arr.iter();
-f := it.map_close(fn i -> i * i)
+f := it.map_close(fn i {i * i})
 // print 149
 for e := f()
 {

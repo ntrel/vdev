@@ -1,3 +1,9 @@
+//one true syntax:
+alias name = fn a1,a2 {a1 + a2}
+alias name = fn a1,a2 {statement; a1 + a2}
+
+/// rejected other syntax options:
+
 // function literal, argument and return types inferred
 alias twice = fn(x){return 2 * x}
 alias add = fn(x,y){return x + y}
