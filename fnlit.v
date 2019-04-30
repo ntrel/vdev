@@ -1,6 +1,10 @@
-//one true syntax:
-alias name = fn a1,a2 {a1 + a2}
-alias name = fn a1,a2 {statement; a1 + a2}
+/// one true syntax:
+// `return` is implicit for literals, like `if` expression
+// argument and return types are inferred 
+alias name = fn a1, a2 {a1 + a2}
+alias name = fn a1, a2 {statement; a1 + a2}
+// compiles to function template
+fn name(a1!, a2!)! {return a1 + a2}
 
 /// rejected other syntax options:
 
