@@ -61,26 +61,34 @@ fn test_array()
 }
 
 // iterator for lazy map
-struct Map<T,R>
+struct Map<It,R>
 {
-    it mut It<T>
-    f fn(T)R
+    it mut It
+    f fn(IterElement<It>)R
 }
-fn (it mut Map<T!,R!>) next() T?
+fn (it mut Map<It!,R!>) next() ?R
 {
     e := it.next()?
     return it.f(e)
 }
 // Returns an iterator
-fn (it mut It<T!>) map(f fn(T)R!) Map<T,R>
+fn (it It!) map(f fn(IterElement<It>)R!) Map<It,R>
 {
     return {it, f}
 }
 
+/*
+Inference of R is complicated:
+Calling `ArrayIter<int>.map(fn i {i * i})`, we can partially
+infer `map<ArrayIter<int>, R!>`, R not known yet.
+Then f is a `fn(int)R!`.
+Applying this to the lambda: `fn(int i)R! {i * i}`
+R is typeof(i * i) = int
+*/
 fn test_map()
 {
     arr := [1,2,3]
-    mut it := arr.iter()
+    it := arr.iter()
     mut mi := it.map(fn i {i * i})
     assert mi.array() == [1,4,9]
     assert mi.next() == none

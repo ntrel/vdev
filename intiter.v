@@ -67,7 +67,7 @@ fn (it mut Map) next() int?
     return it.f(e)
 }
 // Returns an iterator
-fn (it mut IntIter) map(f fn(int)int) Map
+fn (it IntIter) map(f fn(int)int) Map
 {
     return {it, f}
 }
@@ -80,8 +80,9 @@ fn square(i int) int
 fn test_map()
 {
     arr := [1,2,3]
-    mut it := arr.iter()
+    it := arr.iter()
     mut mi := it.map(square)
     assert mi.array() == [1,4,9]
+    // calling next again still returns none
     assert mi.next() == none
 }
