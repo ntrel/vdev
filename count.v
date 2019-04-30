@@ -3,12 +3,34 @@ import iter
 fn test_for()
 {
 	arr := [1,2,3]
-	mut it := arr.iter()
-	// calls it.next(), unwrapping e until none
-	for e in it
+	// calls Iter<int>.next(), unwrapping result until none
+	for e in arr.iter()
 	{
 	    println(e)
 	}
+	mut it := arr.iter()
+	for i in Counter(1, 4)
+	{
+	    assert i == it.next()
+	}
+}
+
+struct Counter
+{
+	start mut usize
+	end usize
+}
+fn (c mut Counter) next() ?usize
+{
+	r := c.start
+	if r == c.end {return none}
+	c.start++
+	return r
+}
+
+fn test_enumerate()
+{
+	arr := [1,2,3]
 	// built-in for on arrays
 	for i,e in arr
 	{
