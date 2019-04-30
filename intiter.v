@@ -29,16 +29,16 @@ fn (it mut IntIter) next() int?
 
 fn test_iter()
 {
-	arr := [1,2,3]
-	mut it := arr.iter()
-	// next returns an optional value
-	e := it.next() or {0}
-	assert e == 1
+    arr := [1,2,3]
+    mut it := arr.iter()
+    // next returns an optional value
+    e := it.next() or {0}
+    assert e == 1
 }
 
 fn (it mut IntIter) array() []int
 {
-    // TODO pre-allocate [;it.len] if len defined?
+    // TODO pre-allocate [;it.len()] if len defined?
     mut a := []int
     for e := it.next()
     {

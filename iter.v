@@ -43,7 +43,7 @@ type IterElement<Iter> = typeof(rvalue<Iter>().next().unwrap())
 // array<Iter> is inferred from `it`
 fn (it mut Iter!) array() []IterElement<Iter>
 {
-    // TODO pre-allocate [;it.len] if len defined?
+    // TODO pre-allocate [;it.len()] if len defined?
     mut a := []IterElement<Iter>
     for e := it.next()
     {
