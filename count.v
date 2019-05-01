@@ -9,7 +9,7 @@ fn test_for()
 	    println(e)
 	}
 	mut it := arr.iter()
-	for i in Counter(1, 4)
+	for i in count(1, 4)
 	{
 	    assert i == it.next()
 	}
@@ -17,15 +17,19 @@ fn test_for()
 
 struct Counter
 {
-	start mut usize
+	cur mut usize
 	end usize
 }
 fn (c mut Counter) next() ?usize
 {
-	r := c.start
+	r := c.cur
 	if r == c.end {return none}
-	c.start++
+	c.cur++
 	return r
+}
+fn count(start, end usize) Counter
+{
+	return {start, end}
 }
 
 fn test_enumerate()
