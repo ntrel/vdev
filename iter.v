@@ -18,7 +18,7 @@ fn (arr []T!) iter() ArrayIter<T>
 }
 fn (it mut ArrayIter<T!>) next() T?
 {
-    if it.ptr == it.end {return error()}
+    if it.ptr == it.end {return none}
     e := *it.ptr
     unsafe {
         it.ptr++
