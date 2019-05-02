@@ -41,8 +41,8 @@ fn test_enumerate()
 	    assert e == arr[i]
 	}
 	// possible generic equivalent:
-	// EnumIter.next returns a tuple of element and index
-	for i,e in arr.iter().enumerate()
+	// EnumIter.next returns a tuple of index and element
+	for i,e in enumerate(arr.iter())
 	{
 	    assert e == arr[i]
 	}
@@ -53,11 +53,11 @@ struct EnumIter<It>
 	it mut It
 	i mut usize
 }
-fn (it It!) enumerate() EnumIter<It> {return {it, 0}}
+fn enumerate(it It!) EnumIter<It> {return {it, 0}}
 
-fn (ei EnumIter<It!>) next() ?(usize, IterElement<It>)
+fn (ei mut EnumIter<It!>) next() ?(usize, IterElement<It>)
 {
-	e := ei.next?
+	e := ei.it.next()?
 	i := ei.i
 	ei.i++
 	return i, e
