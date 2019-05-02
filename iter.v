@@ -132,7 +132,7 @@ fn equal(i1!, i2!) bool
 fn test_equal()
 {
 	a := [1,2,3]
-	mut it := a.iter()
+	it := a.iter()
 	assert equal(it, a.iter())
-	assert it.next() == 1 // equal hasn't mutated iterator
+	assert !equal(it, [1,2].iter())
 }

@@ -97,3 +97,24 @@ fn test_map()
     assert mi.array() == [1,4,9]
     assert mi.next() == none
 }
+
+/// Check if two iterators have equal elements
+fn equal(i1, i2 IntIter) bool
+{
+	mut m1 = i1
+	mut m2 = i2
+	for
+	{
+		e := m1.next()
+		if e != m2.next() {return false}
+		if e == none {return true}
+	}
+}
+
+fn test_equal()
+{
+	a := [1,2,3]
+	it := iter(a)
+	assert equal(it, iter(a))
+	assert !equal(it, iter([1,2]))
+}
