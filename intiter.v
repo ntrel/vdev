@@ -50,6 +50,23 @@ fn test_array()
     assert it.next() == none
 }
 
+fn (iter IntIter) find(element int) IntIter
+{
+    mut it := iter
+    for
+    {
+        e := it.next() or {return it}
+        if e == element {return it}
+    }
+}
+
+fn test_find()
+{
+    it := iter([1,2,3])
+    assert it.find(7).array() == int[]
+    assert it.find(2).array() == arr[1:]
+}
+
 // iterator for lazy map
 struct Map
 {
