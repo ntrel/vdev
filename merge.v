@@ -16,8 +16,9 @@ fn (mi mut MergeIter<I1!, I2!>) next()! //?util.CommonType<IterElement<I1>, Iter
 
 fn test_merge()
 {
+	// local import
 	import iter
 	mut mi := merge([1,4,5].iter(), [2,3,6].iter())
 	assert mi.array() == [1,2,3,4,5,6]
-	//assert mi.equal([1,2,3,4,5,6].iter())
+	//assert equal(mi, [1,2,3,4,5,6].iter())
 }

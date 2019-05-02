@@ -29,6 +29,7 @@ fn (c mut Counter) next() ?usize
 }
 fn count(start, end usize) Counter
 {
+	// return struct inference (v useful when returning template type)
 	return {start, end}
 }
 

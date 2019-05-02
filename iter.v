@@ -94,13 +94,14 @@ fn test_map()
     assert mi.next() == none
 }
 
-// both iterators need to be mutable, so we need a tuple method
-fn (i1 mut I1!, i2 mut I2!) equal() bool
+fn equal(i1!, i2!) bool
 {
+	mut m1 = i1
+	mut m2 = i2
 	for
 	{
-		e := i1.next()
-		if e != i2.next() {return false}
+		e := m1.next()
+		if e != m2.next() {return false}
 		if e == none {return true}
 	}
 }
@@ -109,6 +110,6 @@ fn test_equal()
 {
 	a := [1,2,3]
 	mut it := a.iter()
-	assert (it, a.iter()).equal()
-	assert it.next() == none
+	assert equal(it, a.iter())
+	assert it.next() == 1 // equal hasn't mutated iterator
 }
