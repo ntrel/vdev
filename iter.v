@@ -1,15 +1,16 @@
 // See intiter.v for non-generic code
 
-struct ArrayIter<T>
+// E = Element type
+struct ArrayIter<E>
 {
     // these can be null but will never be read when null
     // so we can avoid using optional types
-    ptr mut *T
-    end *T
+    ptr mut *E
+    end *E
 }
-// arr is an array of generic type T
-// this would be a method in the Array<T> module
-fn (arr []T!) iter() ArrayIter<T>
+// arr is an array of generic type E
+// this would be a method in the Array<E> module
+fn (arr []E!) iter() ArrayIter<E>
 {
     unsafe {
         // Array<int>.ptr should be readable in unsafe code
@@ -17,7 +18,7 @@ fn (arr []T!) iter() ArrayIter<T>
         return {p, p + arr.len}
     }
 }
-fn (it mut ArrayIter<T!>) next() T?
+fn (it mut ArrayIter<E!>) next() E?
 {
     if it.ptr == it.end {return none}
     e := *it.ptr
