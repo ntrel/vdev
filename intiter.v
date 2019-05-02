@@ -30,11 +30,13 @@ fn test_iter()
     assert e == 1
 }
 
-fn (it mut IntIter) array() []int
+/// Create an array from an iterator
+fn (it IntIter) array() []int
 {
     // TODO pre-allocate [;it.len()] if len defined?
     mut a := []int
-    for e := it.next()
+    // `for` makes a mut copy of `it`
+    for e in it
     {
         a << e
     }
@@ -44,10 +46,8 @@ fn (it mut IntIter) array() []int
 fn test_array()
 {
     arr := [1,2,3]
-    mut it := iter(arr)
+    it := iter(arr)
     assert it.array() == arr
-    // calling next again still returns none
-    assert it.next() == none
 }
 
 fn (iter IntIter) find(element int) IntIter

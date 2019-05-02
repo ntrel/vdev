@@ -6,12 +6,12 @@ fn test_for()
 	// calls Iter<int>.next(), unwrapping result until none
 	for e in arr.iter()
 	{
-	    println(e)
+		println(e)
 	}
 	mut it := arr.iter()
 	for i in count(1, 4)
 	{
-	    assert i == it.next()
+		assert i == it.next()
 	}
 }
 
@@ -39,13 +39,13 @@ fn test_enumerate()
 	// built-in for on arrays
 	for i,e in arr
 	{
-	    assert e == arr[i]
+		assert e == arr[i]
 	}
 	// possible generic equivalent:
 	// EnumIter.next returns a tuple of index and element
 	for i,e in enumerate(arr.iter())
 	{
-	    assert e == arr[i]
+		assert e == arr[i]
 	}
 }
 

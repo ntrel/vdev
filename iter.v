@@ -44,11 +44,12 @@ import util
 type IterElement<Iter> = typeof(rvalue<Iter>().next().unwrap())
 
 /// Create an array from an iterator
-fn (it mut Iter!) array() []IterElement<Iter>
+fn (it Iter!) array() []IterElement<Iter>
 {
     // TODO pre-allocate [;it.len()] if len defined?
     mut a := []IterElement<Iter>
-    for e := it.next()
+    // `for` makes a mut copy of `it`
+    for e in it
     {
         a << e
     }
@@ -58,10 +59,9 @@ fn (it mut Iter!) array() []IterElement<Iter>
 fn test_array()
 {
     arr := [1,2,3]
-    mut it := arr.iter()
+    it := arr.iter()
     // Calls array<ArrayIter>
     assert it.array() == arr
-    assert it.next() == none
 }
 
 fn find(iter It!, element!) It
