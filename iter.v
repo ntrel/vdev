@@ -7,7 +7,8 @@ struct ArrayIter<T>
     ptr mut *T
     end *T
 }
-// arr is an array of generic type T, which iter<T> is inferred for
+// arr is an array of generic type T
+// this would be a method in the Array<T> module
 fn (arr []T!) iter() ArrayIter<T>
 {
     unsafe {
@@ -29,8 +30,9 @@ fn (it mut ArrayIter<T!>) next() T?
 fn test_iter()
 {
 	arr := [1,2,3]
+	// calls iter<int>
 	mut it := arr.iter()
-	// next returns an optional value
+	// next<int> returns an optional int
 	e := it.next() or {0}
 	assert e == 1
 }
@@ -40,7 +42,7 @@ import util
 /// Element type of Iter
 type IterElement<Iter> = typeof(rvalue<Iter>().next().unwrap())
 
-// array<Iter> is inferred from `it`
+/// Create an array from an iterator
 fn (it mut Iter!) array() []IterElement<Iter>
 {
     // TODO pre-allocate [;it.len()] if len defined?
@@ -56,6 +58,7 @@ fn test_array()
 {
     arr := [1,2,3]
     mut it := arr.iter()
+    // Calls array<ArrayIter>
     assert it.array() == arr
     assert it.next() == none
 }
@@ -71,7 +74,7 @@ fn (it mut Map<It!,R!>) next() ?R
     e := it.next()?
     return it.f(e)
 }
-// Returns an iterator
+/// Returns an iterator
 fn (it It!) map(f fn(IterElement<It>)R!) Map<It,R>
 {
     return {it, f}
@@ -89,11 +92,13 @@ fn test_map()
 {
     arr := [1,2,3]
     it := arr.iter()
+    // calls map<ArrayIter<int>, int>
     mut mi := it.map(fn i {i * i})
     assert mi.array() == [1,4,9]
     assert mi.next() == none
 }
 
+/// Check if two iterators have equal elements
 fn equal(i1!, i2!) bool
 {
 	mut m1 = i1

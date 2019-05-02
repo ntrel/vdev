@@ -46,6 +46,7 @@ fn test_array()
     arr := [1,2,3]
     mut it := iter(arr)
     assert it.array() == arr
+    // calling next again still returns none
     assert it.next() == none
 }
 
@@ -77,6 +78,5 @@ fn test_map()
     it := iter(arr)
     mut mi := it.map(square)
     assert mi.array() == [1,4,9]
-    // calling next again still returns none
     assert mi.next() == none
 }
