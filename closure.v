@@ -2,8 +2,9 @@
 import intiter
 
 // Returns a closure
-fn (it mut IntIter) map_close(f fn(int)int) fn()?int
+fn (iter IntIter) map_close(f fn(int)int) fn()?int
 {
+    mut it := iter
     return fn {
         e := it.next()?
         return f(e)
@@ -27,8 +28,9 @@ fn test_map()
 import iter
 
 // Returns a closure
-fn (it mut It!) map_close(f fn(IterElement<It>)R!) fn()?R
+fn (iter It!) map_close(f fn(IterElement<It>)R!) fn()?R
 {
+    mut it := iter
     return fn {
         e := it.next()?
         return f(e)
