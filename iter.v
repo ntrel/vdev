@@ -15,6 +15,7 @@ fn (arr []E!) iter() ArrayIter<E>
     unsafe {
         // Array<int>.ptr should be readable in unsafe code
         p := arr.ptr
+        // return struct inference
         return {p, p + arr.len}
     }
 }

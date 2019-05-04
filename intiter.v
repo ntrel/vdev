@@ -1,4 +1,5 @@
-// iterator example that uses minimal features
+// iterator example
+// uses minimal features aiming to compile soon
 // see iter.v for generic version
 
 struct IntIter

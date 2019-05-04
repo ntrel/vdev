@@ -3,9 +3,16 @@ import iter
 fn test_for()
 {
 	arr := [1,2,3]
-	// calls Iter<int>.next(), unwrapping result until none
+	// Iterator for
 	for e in arr.iter()
 	{
+		println(e)
+	}
+	// Equivalent to:
+	for it := arr.iter();;
+	{
+		e := it.next() or {break}
+		// (`it` not visible here)
 		println(e)
 	}
 	mut it := arr.iter()
