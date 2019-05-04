@@ -6,12 +6,13 @@ struct IntList
 }
 fn prepend(l ?*IntList, e int) IntList
 {
-	return IntList{e, l}
+	return IntList{data:e, next:l}
 }
 
 fn test_list()
 {
-	n1 := prepend(none, 4)
+	//n1 := prepend(none, 4)
+	n1 := IntList{data:4}
 	assert n1.data == 4
 	n2 := prepend(&n1, 3)
 	assert n2.next == &n1
