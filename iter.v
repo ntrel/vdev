@@ -39,16 +39,18 @@ fn test_iter()
 	assert e == 1
 }
 
-import util
-// correct way to find element type, doesn't rely on Iter type arguments
-/// Element type of Iter
-type IterElement<Iter> = typeof(rvalue<Iter>().next().unwrap())
+interface Iterable<Element>
+{
+	next() ?Element
+}
 
 /// Create an array from an iterator
-fn (it Iter!) array() []IterElement<Iter>
+// 1 type parameter: type(iter), must convert to Iterable
+// E inferred from type(iter).next(), E is not a parameter
+fn array(iter! : Iterable<E!>) []E
 {
     // TODO pre-allocate [;it.len()] if len defined?
-    mut a := []IterElement<Iter>
+    mut a := []E
     // `for` makes a mut copy of `it`
     for e in it
     {
@@ -62,10 +64,12 @@ fn test_array()
     arr := [1,2,3]
     it := arr.iter()
     // Calls array<ArrayIter>
+    // Uniform Function Call Syntax
     assert it.array() == arr
 }
 
-fn find(iter It!, element!) It
+// E is not a parameter
+fn find(iter It! : Iterable<E!>, element E) It
 {
     mut it := iter
     for
@@ -78,23 +82,24 @@ fn find(iter It!, element!) It
 fn test_find()
 {
     it := [1,2,3].iter()
+    // UFCS chaining
     assert it.find(7).array() == int[]
     assert it.find(2).array() == arr[1:]
 }
 
-// iterator for lazy map
-struct Map<It,R>
+// iterator for lazily evaluated map()
+struct Map<It : Iterable<E!>, R>
 {
     it mut It
-    f fn(IterElement<It>)R
+    f fn(E)R
 }
-fn (it mut Map<It!,R!>) next() ?R
+fn (it mut Map<It!, R!>) next() ?R
 {
     e := it.next()?
     return it.f(e)
 }
 /// Returns an iterator
-fn (it It!) map(f fn(IterElement<It>)R!) Map<It,R>
+fn (it It! : Iterable<E!>) map(f fn(E)R!) Map<It, R>
 {
     return {it, f}
 }
@@ -104,8 +109,8 @@ Inference of R is complicated:
 Calling `ArrayIter<int>.map(fn i {i * i})`, we can partially
 infer `map<ArrayIter<int>, R!>`, R not known yet.
 Then f is a `fn(int)R!`.
-Applying this to the lambda: `fn(int i)R! {i * i}`
-R is typeof(i * i) = int
+Applying this to the lambda: `fn (int i) R! {i * i}`
+R is type(i * i) = int
 */
 fn test_map()
 {
@@ -118,7 +123,8 @@ fn test_map()
 }
 
 /// Check if two iterators have equal elements
-fn equal(i1!, i2!) bool
+// <E> not needed for inference of Iterable
+fn equal(i1! : Iterable, i2! : Iterable) bool
 {
 	mut m1 = i1
 	mut m2 = i2
