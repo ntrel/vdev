@@ -37,12 +37,17 @@ fn test_iter()
 	// next<int> returns an optional int
 	e := it.next() or {0}
 	assert e == 1
+    // temporary result of iter() is inferred as mutable
+    assert arr.iter().next() == 1
 }
 
 interface Iterable<Element>
 {
 	next() ?Element
 }
+
+// type template
+type IterElement<Iterable<E!>> = E
 
 /// Create an array from an iterator
 // 1 type parameter: type(iter), must convert to Iterable

@@ -14,8 +14,7 @@ fn (iter IntIter) map_close(f fn(int)int) fn()?int
 fn test_map()
 {
     arr := [1,2,3]
-    mut it := arr.iter();
-    f := it.map_close(fn i {i * i})
+    f := arr.iter().map_close(fn i {i * i})
     // print 149
     for
     {
@@ -28,7 +27,7 @@ fn test_map()
 import iter
 
 // Returns a closure
-fn (iter It!) map_close(f fn(IterElement<It>)R!) fn()?R
+fn (iter! Iterable<E!>) map_close(f fn(E)R!) fn()?R
 {
     mut it := iter
     return fn {

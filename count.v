@@ -61,7 +61,7 @@ struct EnumIter<It>
 	it mut It
 	i mut usize
 }
-fn enumerate(it It!) EnumIter<It> {return {it, 0}}
+fn enumerate(it It! : Iterable) EnumIter<It> {return {it, 0}}
 
 fn (ei mut EnumIter<It!>) next() ?(usize, IterElement<It>)
 {
