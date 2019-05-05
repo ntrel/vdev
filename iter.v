@@ -46,7 +46,8 @@ interface Iterable<Element>
 
 /// Create an array from an iterator
 // 1 type parameter: type(iter), must convert to Iterable
-// E inferred from type(iter).next(), E is not a parameter
+// E inferred from type(iter).next()
+// E is not a type parameter of array()
 fn array(iter! : Iterable<E!>) []E
 {
     // TODO pre-allocate [;it.len()] if len defined?
@@ -68,13 +69,19 @@ fn test_array()
     assert it.array() == arr
 }
 
-// E is not a parameter
-fn find(iter It! : Iterable<E!>, element E) It
+/// Gets the next element without mutating `iter`
+fn elem(iter! : Iterable<E!>) ?E
 {
     mut it := iter
-    for
+    return it.next()
+}
+
+/// Returns `iter` advanced to the first occurrence of `element`
+fn find(iter It! : Iterable<E!>, element E) It
+{
+    for it := iter;; it.next()
     {
-        e := it.next() or {return it}
+        e := it.elem() or {return it}
         if e == element {return it}
     }
 }
