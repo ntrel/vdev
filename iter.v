@@ -31,31 +31,43 @@ fn (it mut ArrayIter<E!>) next() E?
 
 fn test_iter()
 {
-	arr := [1,2,3]
-	// calls iter<int>
-	mut it := arr.iter()
-	// next<int> returns an optional int
-	e := it.next() or {0}
-	assert e == 1
+    arr := [1,2,3]
+    // calls iter<int>
+    mut it := arr.iter()
+    // next<int> returns an optional int
+    e := it.next() or {0}
+    assert e == 1
     // temporary result of iter() is inferred as mutable
     assert arr.iter().next() == 1
 }
 
 interface Iterable<Element>
 {
-	next() ?Element
+    next() ?Element
 }
 
 // type template
 type IterElement<Iterable<E!>> = E
 
+// compile-time assert
+$assert IterElement<Iterable<int>> is int
+// ArrayIter converts to Iterable
+$assert IterElement<ArrayIter<int>> is int
+
+/* Parameter specialization syntax:
+ * fn f(it! : Iterable<E!>)
+ * fn f<It : Iterable<E!>>(it It) // explicit
+ * 
+ * This means infer type(it) and use as an implicit template parameter
+ * type(it) must convert to Iterable<E>
+ * E is inferred from type(it).next()
+ * E is not a template type parameter, we already have parameter type(it) instead
+ */
+
 /// Create an array from an iterator
-// 1 type parameter: type(iter), must convert to Iterable
-// E inferred from type(iter).next()
-// E is not a type parameter of array()
-fn array(iter! : Iterable<E!>) []E
+fn array(it! : Iterable<E!>) []E
 {
-    // TODO pre-allocate [;it.len()] if len defined?
+    // Could pre-allocate [E{}; it.len()] if len defined
     mut a := []E
     // `for` makes a mut copy of `it`
     for e in it
@@ -69,8 +81,8 @@ fn test_array()
 {
     arr := [1,2,3]
     it := arr.iter()
+    // var.function_name(...) = Method Call Syntax
     // Calls array<ArrayIter>
-    // Uniform Function Call Syntax
     assert it.array() == arr
 }
 
@@ -86,8 +98,8 @@ fn find(iter It! : Iterable<E!>, element E) It
 {
     for it := iter;; it.next()
     {
-		// if no more elements, we return `it` not none
-		// this is because the iterator may still have useful public fields
+        // if no more elements, we return `it` not none
+        // because the iterator may still have useful public fields
         e := it.elem() or {return it}
         if e == element {return it}
     }
@@ -140,20 +152,20 @@ fn test_map()
 // <E> not needed for inference of Iterable
 fn equal(i1! : Iterable, i2! : Iterable) bool
 {
-	mut m1 = i1
-	mut m2 = i2
-	for
-	{
-		e := m1.next()
-		if e != m2.next() {return false}
-		if e == none {return true}
-	}
+    mut m1 = i1
+    mut m2 = i2
+    for
+    {
+        e := m1.next()
+        if e != m2.next() {return false}
+        if e == none {return true}
+    }
 }
 
 fn test_equal()
 {
-	a := [1,2,3]
-	it := a.iter()
-	assert equal(it, a.iter())
-	assert !equal(it, [1,2].iter())
+    a := [1,2,3]
+    it := a.iter()
+    assert equal(it, a.iter())
+    assert !equal(it, [1,2].iter())
 }

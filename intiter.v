@@ -34,7 +34,7 @@ fn test_iter()
 /// Create an array from an iterator
 fn (it IntIter) array() []int
 {
-    // TODO pre-allocate [;it.len()] if len defined?
+    // Could pre-allocate [E{}; it.len()] if len defined
     mut a := []int
     // `for` makes a mut copy of `it`
     for e in it
@@ -56,8 +56,8 @@ fn (iter IntIter) find(element int) IntIter
 {
     for it := iter;; it.next()
     {
-		// if no more elements, we return `it` not none
-		// this is because the iterator may still have useful public fields
+        // if no more elements, we return `it` not none
+        // because the iterator may still have useful public fields
         e := it.elem() or {return it}
         if e == element {return it}
     }
@@ -104,20 +104,20 @@ fn test_map()
 /// Check if two iterators have equal elements
 fn equal(i1, i2 IntIter) bool
 {
-	mut m1 = i1
-	mut m2 = i2
-	for
-	{
-		e := m1.next()
-		if e != m2.next() {return false}
-		if e == none {return true}
-	}
+    mut m1 = i1
+    mut m2 = i2
+    for
+    {
+        e := m1.next()
+        if e != m2.next() {return false}
+        if e == none {return true}
+    }
 }
 
 fn test_equal()
 {
-	a := [1,2,3]
-	it := iter(a)
-	assert equal(it, iter(a))
-	assert !equal(it, iter([1,2]))
+    a := [1,2,3]
+    it := iter(a)
+    assert equal(it, iter(a))
+    assert !equal(it, iter([1,2]))
 }
