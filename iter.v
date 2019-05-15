@@ -86,6 +86,8 @@ fn find(iter It! : Iterable<E!>, element E) It
 {
     for it := iter;; it.next()
     {
+		// if no more elements, we return `it` not none
+		// this is because the iterator may still have useful public fields
         e := it.elem() or {return it}
         if e == element {return it}
     }

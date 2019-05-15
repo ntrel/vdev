@@ -51,12 +51,14 @@ fn test_array()
     assert it.array() == arr
 }
 
+/// Returns `iter` advanced to the first occurrence of `element`
 fn (iter IntIter) find(element int) IntIter
 {
-    mut it := iter
-    for
+    for it := iter;; it.next()
     {
-        e := it.next() or {return it}
+		// if no more elements, we return `it` not none
+		// this is because the iterator may still have useful public fields
+        e := it.elem() or {return it}
         if e == element {return it}
     }
 }
