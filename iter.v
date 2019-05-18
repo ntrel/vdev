@@ -28,6 +28,13 @@ fn (it mut ArrayIter<E!>) next() E?
     }
     return e
 }
+fn (it ArrayIter<E>) slice() []E
+{
+    unsafe {
+        p := it.ptr
+        return := p[:it.end - p]
+    }
+}
 
 fn test_iter()
 {
@@ -39,6 +46,7 @@ fn test_iter()
     assert e == 1
     // temporary result of iter() is inferred as mutable
     assert arr.iter().next() == 1
+    assert arr.iter().slice() == arr
 }
 
 interface Iterable<Element>
@@ -67,9 +75,15 @@ $assert IterElement<ArrayIter<int>> is int
 /// Create an array from an iterator
 fn array(it! : Iterable<E!>) []E
 {
+    // introspection
+    $if type(it) is ArrayIter<E>
+    {   // array memory already exists
+        return it.slice()
+        // below code does not apply for ArrayIter
+        // as $if block has terminating return statement
+    }
     // Could pre-allocate [E{}; it.len()] if len defined
     mut a := []E
-    // `for` makes a mut copy of `it`
     for e in it
     {
         a << e
