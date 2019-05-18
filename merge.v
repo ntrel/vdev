@@ -10,10 +10,11 @@ fn merge(i1 I1! : Iterable, i2 I2! : Iterable) MergeIter<I1, I2>
 {
 	return {i1, i2}
 }
-fn (mi mut MergeIter<I1!, I2!>) next()! //?util.CommonType<IterElement<I1>, IterElement<I2>>
+fn (mi mut MergeIter<I1!, I2!>) next() IterElement<I1>
 {
 	e1 := i1.elem() or {return i2.next()}
 	e2 := i2.elem() or {return i1.next()}
+	// Note: return type is type(i1.next())
 	return if e1 < e2 {i1.next()} else {i2.next()}
 }
 
