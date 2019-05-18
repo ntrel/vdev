@@ -70,3 +70,31 @@ fn (ei mut EnumIter<It!>) next() ?(usize, IterElement<It>)
 	ei.i++
 	return i, e
 }
+
+struct Series<T, R>
+{
+	// introspection: infinite items
+	const empty = false
+	cur T
+	fun fn(T)R
+}
+fn series(first T, fun fn(T)R) Series<T, R>
+{
+	return {first, fun}
+}
+// result is never none
+fn (mut s Series<T, R>) next() ?R
+{
+	e := s.cur
+	s.cur = s.fun(s.cur)
+	return e
+}
+
+fn test_series()
+{
+	mut s := series(1, fn n {n * 2})
+	assert s.next() == 1
+	assert s.next() == 2
+	assert s.next() == 4
+	assert s.next() == 8
+}
