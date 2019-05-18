@@ -1,4 +1,4 @@
-import iter
+import array, iter
 
 fn test_for()
 {

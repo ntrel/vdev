@@ -1,4 +1,4 @@
-import iter
+import array, iter
 
 struct MergeIter<I1, I2>
 {
