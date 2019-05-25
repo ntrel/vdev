@@ -34,9 +34,9 @@ fn iter(il ?*IntList) IntListIter
 }
 fn (it mut IntListIter) next() ?int
 {
-	if it.node == none {return none}
-	e := it.node.data
-	it = it.node.next
+	n := it.node?
+	e := n.data
+	it.node = n.next
 	return e
 }
 
@@ -44,7 +44,7 @@ fn (it mut IntListIter) next() ?int
 struct List<E>
 {
 	data E
-	next mut *List<E>
+	next mut ?*List<E>
 }
 fn prepend(l ?*List<E!>, e E) List<E>
 {
@@ -61,9 +61,9 @@ fn iter(il ?*List<E!>) ListIter<E>
 }
 fn (it mut ListIter<E!>) next() ?E
 {
-	if it.node == none {return none}
-	e := it.node.data
-	it = it.node.next
+	n := it.node?
+	e := n.data
+	it.node = n.next
 	return e
 }
 fn test_list()
