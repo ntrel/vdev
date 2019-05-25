@@ -2,6 +2,7 @@
 // uses minimal features aiming to compile soon
 // see iter.v for generic version
 
+// iterator for array
 struct IntIter
 {
     // Note: iter.v uses pointers
@@ -70,6 +71,32 @@ fn test_find()
     assert it.find(2).array() == arr[1:]
 }
 
+// iterator for lazily evaluated filter()
+struct Filter
+{
+    it mut IntIter
+    f fn(int)bool
+}
+fn (it mut Filter) next() int?
+{
+    for
+    {
+        e := it.next() or return none
+        if it.f(e) return e
+    }
+}
+/// Returns an iterator
+fn (it IntIter) filter(f fn(int)bool) Filter
+{
+    return Filter{it, f}
+}
+
+fn test_filter()
+{
+    odd := [1,2,3,4,5].iter().filter(fn e {e & 1 != 0})
+    assert odd.array() == [1,3,5]
+}
+
 // iterator for lazy map
 struct Map
 {
@@ -91,7 +118,6 @@ fn square(i int) int
 {
     return i * i
 }
-
 fn test_map()
 {
     arr := [1,2,3]

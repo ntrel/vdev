@@ -49,7 +49,7 @@ fn test_array()
     arr := [1,2,3]
     it := arr.iter()
     // var.function_name(...) = Method Call Syntax
-    // Calls array<ArrayIter>
+    // Calls array<ArrayIter<int>>, E = int
     assert it.array() == arr
 }
 
@@ -78,6 +78,33 @@ fn test_find()
     // UFCS chaining
     assert it.find(7).array() == int[]
     assert it.find(2).array() == arr[1:]
+}
+
+// iterator for lazily evaluated filter()
+struct Filter<It : Iterable<E!>>
+{
+    it mut It
+    f fn(E)bool
+}
+fn (it mut Filter<It! : Iterable<E!>>) next() ?E
+{
+    for
+    {
+        e := it.next() or return none
+        if it.f(e) return e
+    }
+}
+/// Returns an iterator
+fn (it It! : Iterable<E!>) filter(f fn(E)bool) Filter<It>
+{
+    return {it, f}
+}
+
+fn test_filter()
+{
+    // calls filter<ArrayIter<int>>, E = int
+    odd := [1,2,3,4,5].iter().filter(fn e {e & 1 != 0})
+    assert odd.array() == [1,3,5]
 }
 
 // iterator for lazily evaluated map()
