@@ -90,7 +90,7 @@ fn (it mut Filter<It! : Iterable<E!>>) next() ?E
 {
     for
     {
-        e := it.next() or return none
+        e := it.next()?
         if it.f(e) return e
     }
 }
