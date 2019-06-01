@@ -1,14 +1,18 @@
 Mutability
 ===
 For basic types like int, mutability doesn't cause type mismatches.
+Each variable is only mutable if declared with `mut`.
 I'll write the type of each declaration in comments: 
 ```rust
-x := 5		// int
+x := 5	// int
+x += 1	// error, x is not mutable
 // copy x
 mut y := x	// mut int
-y += 1
+y += 1	// OK
 assert x == 5
 assert y == 6
+z := y	// int
+z += 1	// error, z is not mutable
 ```
 With pointers, things get more complicated:
 ```rust
