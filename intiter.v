@@ -18,7 +18,7 @@ fn (it mut ArrayIter) next() int?
     s := it.slice
     if !s.len {return none}
     e := s[0]
-    it.slice = s[1:]
+    it.slice = s.slice(1,s.len)
     return e
 }
 
@@ -67,7 +67,7 @@ fn test_find()
 {
     it := iter([1,2,3])
     assert it.find(7).array() == int[]
-    assert it.find(2).array() == arr[1:]
+    assert it.find(2).array() == [2,3]
 }
 
 // iterator for lazily evaluated filter()

@@ -77,7 +77,7 @@ fn test_find()
     it := [1,2,3].iter()
     // UFCS chaining
     assert it.find(7).array() == int[]
-    assert it.find(2).array() == arr[1:]
+    assert it.find(2).array() == [2,3]
 }
 
 // iterator for lazily evaluated filter()
