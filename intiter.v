@@ -2,19 +2,18 @@
 // uses minimal features aiming to compile soon
 // see iter.v for generic version
 
-// iterator for array
-struct IntIter
+struct ArrayIter
 {
     // Note: iter.v uses pointers
     slice mut []int
 }
 // this would be a method in the Array<T> module
-//fn (arr []int) iter() IntIter
-fn iter(arr []int) IntIter
+//fn (arr []int) iter() ArrayIter
+fn iter(arr []int) ArrayIter
 {
-    return IntIter{slice:arr}
+    return ArrayIter{slice:arr}
 }
-fn (it mut IntIter) next() int?
+fn (it mut ArrayIter) next() int?
 {
     s := it.slice
     if !s.len {return none}
@@ -33,7 +32,7 @@ fn test_iter()
 }
 
 /// Create an array from an iterator
-fn (it IntIter) array() []int
+fn (it ArrayIter) array() []int
 {
     // Could pre-allocate [E{}; it.len()] if len defined
     mut a := []int
@@ -53,7 +52,7 @@ fn test_array()
 }
 
 /// Returns `iter` advanced to the first occurrence of `element`
-fn (iter IntIter) find(element int) IntIter
+fn (iter ArrayIter) find(element int) ArrayIter
 {
     for it := iter;; it.next()
     {
@@ -100,7 +99,7 @@ fn test_filter()
 // iterator for lazy map
 struct Map
 {
-    it mut IntIter
+    it mut ArrayIter
     f fn(int)int
 }
 fn (it mut Map) next() int?
@@ -109,7 +108,7 @@ fn (it mut Map) next() int?
     return it.f(e)
 }
 // Returns an iterator
-fn (it IntIter) map(f fn(int)int) Map
+fn (it ArrayIter) map(f fn(int)int) Map
 {
     return Map{it, f}
 }
@@ -128,7 +127,7 @@ fn test_map()
 }
 
 /// Check if two iterators have equal elements
-fn equal(i1, i2 IntIter) bool
+fn equal(i1, i2 ArrayIter) bool
 {
     mut m1 = i1
     mut m2 = i2
