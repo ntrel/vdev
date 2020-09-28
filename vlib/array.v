@@ -8,6 +8,7 @@ pub:
 	start voidptr
 }
 
+// allocated on the heap
 struct ArrayAlloc
 {
 	cap  int
@@ -19,7 +20,7 @@ fn __new_array_alloc(cap, elem_size int) voidptr {
 	ptr := malloc(sizeof(int) + cap * elem_size)
 	aa := &ArrayAlloc(ptr)
 	aa.cap = cap
-	return &aa.data + 1
+	return &aa.data
 }
 
 fn __new_array(len, cap, elem_size int) Array {
@@ -30,14 +31,16 @@ fn __new_array(len, cap, elem_size int) Array {
 		element_size: elem_size
 		data: &alloc.data
 		len: len
+		start: &alloc.data
 	}
 	return arr
 }
 
+[inline]
 fn (a Array) cap() {
-	return if a.start & 1 {
-		start := a.start - 1
-		aa := &ArrayAlloc(start - sizeof(ArrayAlloc))
-		aa.cap
-	} else {a.len}
+	if a.start != a.data {
+		return a.len
+	}
+	alloc := &ArrayAlloc(a.start - sizeof(ArrayAlloc))
+	return alloc.cap
 }
