@@ -2,17 +2,22 @@
 
 = Generic & functional programming
 
-== Expression function definitions & Lambdas
-Lambdas don't contain statements, only an expression.
-Argument types and return type are inferred:
+== Defining functions with an expression
 ```v
-fn named(a){return expr}
-fn (arg1){return expr} // anonymous fn
-fn named(a) = expr
-fn (arg1) = expr // lambda
+fn f(arg T) R {return expr}
+fn f(arg T) R = expr
+fn f(arg T) = expr // inferred return type
+```
+
+== Lambdas
+Lambdas don't have statements, only a result expression.
+Argument types and return type can be inferred:
+```v
+fn(arg) R {return expr} // anonymous fn
+fn(arg) = expr // lambda
 
 _ = arr.map(fn(e){return e * 2})
-_ = arr.map(fn(e) = e * 2)
+_ = arr.map(fn(e) = e * 2) // less noisy
 _ = arr.sort(fn(a, b) = a < b)
 ```
 
