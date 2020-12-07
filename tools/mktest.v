@@ -5,28 +5,32 @@ fn bail(msg string) {
 	exit(1)
 }
 
-if os.args.len < 2 {
-	bail('Usage: ${os.args[0]} filename')
+if os.args.len <= 2 {
+	bail('Usage: ${os.args[0]} v_compiler filenames')
 }
-fname := os.args.last()
-if !os.exists(fname) {
-	bail('$fname does not exist')
-}
-if !fname.ends_with('.vv') {
-	bail('$fname should end with .vv')
-}
-mut compiler := './v'
-$if windows {
-	compiler = 'v.exe'
-}
+compiler := os.args[1]
 if !os.exists(compiler) {
 	bail('$compiler does not exist')
 }
-cmd := '$compiler -W $fname'
-println(cmd)
-r := os.exec(cmd)?
-outf := fname[..fname.len-3] + '.out'
-println('Writing to $outf')
-os.write_file(outf, r.output + '\n') or {
-	bail('error writing file: $err')
+fnames := os.args[2..]
+for fname in fnames {
+	if !os.exists(fname) {
+		bail('$fname does not exist')
+	}
+	if !fname.ends_with('.vv') {
+		bail('$fname should end with .vv')
+	}
+}
+for fname in fnames {
+	cmd := 'Executing: $compiler -W $fname'
+	println(cmd)
+	r := os.exec(cmd) or {
+		bail(err)
+		return
+	}
+	outf := fname[..fname.len-3] + '.out'
+	println('Writing to $outf')
+	os.write_file(outf, r.output + '\n') or {
+		bail('error writing file: $err')
+	}
 }
