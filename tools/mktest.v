@@ -9,7 +9,7 @@ if os.args.len <= 2 {
 	bail('Usage: ${os.args[0]} v_compiler filenames')
 }
 compiler := os.args[1]
-if !os.exists(compiler) {
+if !os.exists(compiler.all_before(' ')) {
 	bail('$compiler does not exist')
 }
 fnames := os.args[2..]
