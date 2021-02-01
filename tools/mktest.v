@@ -22,7 +22,7 @@ for fname in fnames {
 	}
 }
 for fname in fnames {
-	cmd := '$compiler -W $fname'
+	cmd := '$compiler $fname'
 	println('Executing: $cmd')
 	r := os.exec(cmd) or {
 		bail(err)
